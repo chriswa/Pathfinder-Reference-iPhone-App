@@ -10,17 +10,19 @@ function initSpells() {
 }
 
 function initSearch() {
-  var toolbar = new Ext.Toolbar({
-    dock: 'top',
-    title: 'Search',
-    items: []
+  var searchBar = new Ext.Toolbar({
+    //ui: 'gray',
+    items: [{
+      xtype: 'searchfield',
+      flex: 1
+    }]
   });
   return new Ext.Panel({
-    html: "Search!",
-    dockedItems: [ toolbar ],
+    html: "Search results go here...",
+    //items: [ searchResults ],
+    dockedItems: [ searchBar ],
     
     // for TabPanel
-    cls: 'tabbed-panel',
     iconCls: 'search',
     title: 'Search'
   });
@@ -33,11 +35,11 @@ function initRules() {
     items: []
   });
   return new Ext.Panel({
-    html: "Rules!",
     dockedItems: [ toolbar ],
+    cls: 'bigtext-panel',
+    html: "<h1>Rules</h1><p>Work in progress...</p>",
     
     // for TabPanel
-    cls: 'tabbed-panel',
     iconCls: 'settings',
     title: 'Rules'
   });
@@ -50,24 +52,41 @@ function initConditions() {
     items: []
   });
   return new Ext.Panel({
-    html: "Conditions!",
     dockedItems: [ toolbar ],
+    cls: 'bigtext-panel',
+    html: "<h1>Conditions</h1><p>Work in progress...</p>",
     
     // for TabPanel
-    cls: 'tabbed-panel',
     iconCls: 'time',
     title: 'Conditions'
   });
 }
 
+function initMore() {
+  var toolbar = new Ext.Toolbar({
+    dock: 'top',
+    title: 'More',
+    items: []
+  });
+  return new Ext.Panel({
+    dockedItems: [ toolbar ],
+    cls: 'bigtext-panel',
+    html: "<h1>More</h1><p>There is no more just yet...</p>",
+    
+    // for TabPanel
+    iconCls: 'more',
+    title: 'More'
+  });
+}
+
 function initMain() {
-  return new Ext.TabPanel({
+  var mainPanel = new Ext.TabPanel({
     fullscreen: true,
-    deferredRender: false, // ???
-    //autoScroll: true, // ???
-    //margins: '0 4 4 0', // ???
-    //closable: false, // ???
-    //type: 'light',
+    deferredRender: true, // ???
+    autoScroll: false, // ???
+    margins: '0 4 4 0', // ???
+    closable: false, // ???
+    type: 'light',
     tabBar: {
       dock: 'bottom',
       scroll: 'horizontal',
@@ -78,35 +97,26 @@ function initMain() {
     },
     cardSwitchAnimation: {
       type: 'slide',
-      cover: true
+      cover: false
     },
     defaults: {
       scroll: 'vertical'
     },
-    //cls: 'card1',
     items: [
-      initSpells(),
       initSearch(),
+      initSpells(),
       initRules(),
-      initConditions()
-      //{ iconCls: 'download', title: 'Download' },
-      //{ iconCls: 'favorites', title: 'Favorites' },
-      //{ iconCls: 'info', title: 'Info' },
-      //{ iconCls: 'settings', title: 'Settings' },
-      //{ iconCls: 'team', title: 'Team' },
-      //{ iconCls: 'time', title: 'Time' },
-      //{ iconCls: 'user', title: 'User' },
-      //{ iconCls: 'more', title: 'More' }
+      initConditions(),
+      initMore()
     ],
-    //id: 'toolbartxt',     // ???
-    //styleHtmlContent: true, // ???
     dockedItems: []
   });
+  return mainPanel;
 }
 
 Ext.setup({
-  tabletStartupScreen: 'images/tablet_startup.png',
-  phoneStartupScreen: 'images/phone_startup.png',
+  tabletStartupScreen: 'images/tablet-startup.png',
+  phoneStartupScreen: 'images/phone-startup.png',
   icon: 'images/icon.png',
   glossOnIcon: false,
 
@@ -212,7 +222,7 @@ function sampleDataStore() {
       model: 'ListItem',
       root: data,
       proxy: {
-          type: 'ajax',
+          type: 'memory',
           reader: {
               type: 'tree',
               root: 'items'
